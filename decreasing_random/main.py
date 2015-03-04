@@ -10,24 +10,17 @@ def random_decreasing():
         yield next
         prev = next
         next = random.random()
+    else:
+        yield next
 
 
-def take_sample():
-    return len(list(random_decreasing()))
-
-
-def serial_samples(n_trials):
-    return (take_sample() for _ in range(n_trials))
+def take_sample(_):
+    return sum(1 for _ in random_decreasing())
 
 
 def main(args):
     n_trials = int(args[1]) if len(args) > 1 else 100000
-
-    summation = 0
-    for x in (serial_samples(n_trials)):
-        summation += x
-
-    avg = summation / n_trials
+    avg = sum(map(take_sample, range(n_trials))) / n_trials
     print(avg)
 
 
